@@ -22,12 +22,12 @@ public class Environnement extends Agent {
 	Cellule [ ] [ ] sudoku = new Cellule [ 9 ] [ 9 ] ;
 	
 	protected void setup(){
-//		System.out.println(getLocalName() + "---> Installed");
 		addBehaviour(new Init_sudoku_behaviour());
 		addBehaviour(new Reader_behaviour());
 		addBehaviour(new Treatment_behaviour());
 	}
 	
+	//Ce behaviour initialize un sudoku à partir d'un fichier texte
 	public class Init_sudoku_behaviour extends OneShotBehaviour{
 
 		@Override
@@ -56,11 +56,11 @@ public class Environnement extends Agent {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
 		}
-		
 	}
 	
+	//Ce behaviour récupère les messages envoyés par Simulation, lui informant que les analyseurs sont près à travailler
+	//Puis il découpe en 27 groupes de 9 cellules le sudoku, et les envoient aux 27 analyseurs
 	public class Reader_behaviour extends CyclicBehaviour{
 
 		@Override
@@ -70,16 +70,15 @@ public class Environnement extends Agent {
 			if (message != null) {
 				ACLMessage messageToAnalyser = new ACLMessage(ACLMessage.REQUEST);
 				messageToAnalyser.addReceiver(new AID(RequestStoE.read(message.getContent()).getAnalyseur(), AID.ISLOCALNAME));
+				
 				int id = RequestStoE.read(message.getContent()).getId();
 				messageToAnalyser.setConversationId(Integer.toString(id));
+				
 				Cellule[] ListCellules = getListCellulesById(id);
-				
 				ListCellule listcel = new ListCellule(ListCellules);
-				
 				messageToAnalyser.setContent(listcel.toJSON());
-				send(messageToAnalyser);
 				
-				// RECUPERER LE MESSAGE RETOUR : C'est un INFORM
+				send(messageToAnalyser);
 			}
 		}
 		
@@ -110,6 +109,8 @@ public class Environnement extends Agent {
 		}
 	}
 	
+	//Ce behaviour récupère les réponses des analyseurs
+	//Remplace dans le sudoku les nouvelles valeurs, ou possibilités, seulement si elles sont intéressantes
 	public class Treatment_behaviour extends CyclicBehaviour{
 
 		@Override
@@ -118,12 +119,7 @@ public class Environnement extends Agent {
 			ACLMessage message = receive(MessageTemplate.MatchPerformative(ACLMessage.CONFIRM));
 			if (message != null) {
 				int id = Integer.parseInt(message.getConversationId());
-				Cellule[] listCel = ListCellule.read(message.getContent()).getList();
-				
-//				ListCellule tmp = new ListCellule(listCel);
-//				System.out.printf(" List annalysé " + id + "  : ");
-//				System.out.println(tmp.toJSON());
-				
+				Cellule[] listCel = ListCellule.read(message.getContent()).getList();				
 				replaceInSudoku(id, listCel);
 				System.out.println("Treatment with the id : " + id);
 				print_sudoku();
@@ -183,8 +179,9 @@ public class Environnement extends Agent {
 		}
 	}	
 	
-	
-	public void print_sudoku(){
+	//Cette fonction permet d'afficher un sudoku
+	//Il affiche la valeur si elle existe, sinon il affiche la liste des possibilités
+	private void print_sudoku(){
 		for (int i=0; i<9; i++){
 			System.out.printf("| ");
 			for (int j=0; j<9; j++){

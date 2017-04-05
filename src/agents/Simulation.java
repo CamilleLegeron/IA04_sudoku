@@ -13,18 +13,18 @@ import model.RequestStoE;
 
 public class Simulation extends Agent{
 	List<AID> listAnalyseur = new LinkedList<AID>();
-	//Simulation that = this;
 	protected void setup(){
-//		System.out.println(getLocalName() + "---> Installed");
 		addBehaviour(new IsReadyBehaviour());
 	}
 	
+	//Ce behaviour reçoit les souscriptions des 27 analyseurs
+	//Une fois tous reçut, il crée le behaviour MyTickerBehaviour
+	//Et se termine
 	public class IsReadyBehaviour extends Behaviour{
 		boolean IsDone = false;
 		int count = 27;
 		@Override
 		public void action() {
-			// TODO Auto-generated method stub
 			ACLMessage message = receive(MessageTemplate.MatchPerformative(ACLMessage.SUBSCRIBE));
 			if(message!=null)
 			{
@@ -38,23 +38,22 @@ public class Simulation extends Agent{
 
 		@Override
 		public boolean done() {
-			// TODO Auto-generated method stub
 			return IsDone;
 		}
 	
 	}
 	
+	//Ce behaviour envoie tous les n ms 27 messages à l'environnement 
+	//Avec les coordonnées de chaque analyseur
 	public class MyTickerBehaviour extends TickerBehaviour{
 		private static final long serialVersionUID = 1L;
 
 		public MyTickerBehaviour(Agent a, long period) {
 			super(a, period);
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override
 		protected void onTick() {
-			// TODO Auto-generated method stub
 			System.out.println("onTick");
 			for(int i = 0; i < listAnalyseur.size(); i++)
 			{
