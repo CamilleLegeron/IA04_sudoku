@@ -14,7 +14,7 @@ import model.ListCellule;
 public class Analyseur extends Agent{
 	
 	protected void setup(){
-		System.out.println(getLocalName() + "---> Installed");
+//		System.out.println(getLocalName() + "---> Installed");
 		
 		ACLMessage sub = new ACLMessage(ACLMessage.SUBSCRIBE);
 		sub.addReceiver(new AID("Simulation",AID.ISLOCALNAME));

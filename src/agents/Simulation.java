@@ -15,7 +15,7 @@ public class Simulation extends Agent{
 	List<AID> listAnalyseur = new LinkedList<AID>();
 	//Simulation that = this;
 	protected void setup(){
-		System.out.println(getLocalName() + "---> Installed");
+//		System.out.println(getLocalName() + "---> Installed");
 		addBehaviour(new IsReadyBehaviour());
 	}
 	

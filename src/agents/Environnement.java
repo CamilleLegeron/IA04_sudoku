@@ -19,10 +19,9 @@ import model.ListCellule;
 
 public class Environnement extends Agent {
 	Cellule [ ] [ ] sudoku = new Cellule [ 9 ] [ 9 ] ;
-	// il faudra initialiser la matrice du sudoku
 	
 	protected void setup(){
-		System.out.println(getLocalName() + "---> Installed");
+//		System.out.println(getLocalName() + "---> Installed");
 		addBehaviour(new Init_sudoku_behaviour());
 		addBehaviour(new Reader_behaviour());
 	}
@@ -47,9 +46,10 @@ public class Environnement extends Agent {
 			    	for (int j = 0; j < 9; j++){
 			    		Cellule cel = new Cellule(i,j, Integer.valueOf(lineParsed[j].trim()));
 			    		sudoku[i][j] = cel;
-			    		System.out.println(cel.toJSON());
+//			    		System.out.println(cel.toJSON());
 			    	}
 			    }
+			    print_sudoku();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -101,10 +101,21 @@ public class Environnement extends Agent {
 					}
 				}
 			}
-			
 			return ListCellules;
-			
 		}
-		
+	}
+	
+	public void print_sudoku(){
+		for (int i=0; i<9; i++){
+			System.out.printf("| ");
+			for (int j=0; j<9; j++){
+				if (sudoku[i][j].getValue() != 0){
+					System.out.printf(sudoku[i][j].getValue() + "  ");
+				} else {
+					System.out.printf(sudoku[i][j].getPossibilities() + " ");
+				}
+			}
+			System.out.println("|");
+		}		
 	}
 }
