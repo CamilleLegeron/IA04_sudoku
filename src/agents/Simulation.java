@@ -31,7 +31,7 @@ public class Simulation extends Agent{
 				listAnalyseur.add(message.getSender());
 				if(listAnalyseur.size() == count){
 					IsDone = true;
-					addBehaviour(new MyTickerBehaviour(this.getAgent(),500));
+					addBehaviour(new MyTickerBehaviour(this.getAgent(),5000));
 				}
 			}
 		}

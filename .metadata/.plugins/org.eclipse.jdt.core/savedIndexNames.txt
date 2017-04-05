@@ -1,0 +1,7 @@
+INDEX VERSION 1.129+D:\Documents\UTC\GI04\IA04\workspace\TD4_Sudoku\IA04_sudoku\.metadata\.plugins\org.eclipse.jdt.core
+2335496253.index
+2149595868.index
+88343827.index
+1542180059.index
+3955131574.index
+2380175872.index
