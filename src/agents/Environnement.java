@@ -67,7 +67,6 @@ public class Environnement extends Agent {
 			ACLMessage message = receive(MessageTemplate.MatchPerformative(ACLMessage.INFORM));
 			if (message != null) {
 				ACLMessage messageToAnalyser = new ACLMessage(ACLMessage.REQUEST);
-				System.out.println(message.getContent());
 				messageToAnalyser.addReceiver(new AID(RequestStoE.read(message.getContent()).getAnalyseur(), AID.ISLOCALNAME));
 				int id = RequestStoE.read(message.getContent()).getId();
 				Cellule[] ListCellules = getListCellulesById(id);
@@ -77,8 +76,7 @@ public class Environnement extends Agent {
 				messageToAnalyser.setContent(listcel.toJSON());
 				send(messageToAnalyser);
 				
-				// il faudra rajouter au message le liste des cellules
-				// faire une fonction qui donne une série de 9 cellules correspondant à l'id du message reçu
+				// RECUPERER LE MESSAGE RETOUR : C'est un INFORM
 			}
 		}
 		

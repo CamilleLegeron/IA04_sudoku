@@ -30,17 +30,21 @@ public class Analyseur extends Agent{
 			// TODO Auto-generated method stub
 			ACLMessage message = receive(MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
 			if (message != null) {
+				System.out.println("Je suis l'analyseur :" + getLocalName());
 				ACLMessage reply = message.createReply();
 				System.out.println("MESSAGE : " + message.getContent());
 				Cellule[] listCel = ListCellule.read(message.getContent()).getList();
-				System.out.println("ERRRRRRRRRRRRRROR -------------------------------");
 				ListCellule tmp = new ListCellule(listCel);
 				FirstFilter(listCel);
 				tmp.setList(listCel);
-				System.out.println(tmp.toJSON());
+//				print_List(listCel);
+				System.out.println("TEST 1 : " + tmp.toJSON());
 				SecondFilter(listCel);
+//				print_List(listCel);
 				tmp.setList(listCel);
-				System.out.println(tmp.toJSON());
+				System.out.println("TEST 2 : " + tmp.toJSON());
+				reply.setContent(tmp.toJSON());
+				send(reply);
 				
 			}
 		}
@@ -82,13 +86,23 @@ public class Analyseur extends Agent{
 							deletedPoss.add(p);
 						}
 					});
-					
 					list[i].getPossibilities().removeAll(deletedPoss);
-					
 				}
 			}
 		}
 		
+		private void print_List(Cellule[] list){
+			System.out.printf("| ");
+			for (int i=0; i<9; i++){
+				if (list[i].getValue() != 0){
+					System.out.printf(list[i].getValue() + "  ");
+				} else {
+					System.out.printf(list[i].getPossibilities() + " ");
+				}
+			}
+			System.out.println("|");		
+		}
 	}
+	
 
 }
