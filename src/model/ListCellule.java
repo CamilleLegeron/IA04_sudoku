@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ListCellule {
 
 	private Cellule[] listCel = new Cellule[9];
-
+	
 	public ListCellule() {
 	}
 

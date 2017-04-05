@@ -9,9 +9,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Cellule {
-	private int i;
-	private int j;
-	private int val;
+	private int line;
+	private int column;
+	private int value;
 	private List<Integer> possibilities = new LinkedList<Integer>();
 
 	public Cellule() {
@@ -19,35 +19,35 @@ public class Cellule {
 
 	public Cellule(int line, int column, int value) {
 		super();
-		this.i = line;
-		this.j = column;
-		this.val = value;
+		this.line = line;
+		this.column = column;
+		this.value = value;
 	}
 
 	public int getLine() {
-		return i;
+		return this.line;
 	}
 	
 	public int getColumn(){
-		return this.j;
+		return this.column;
 	}
 
 	public int getValue(){
-		return this.val;
+		return this.value;
 	}
 	
 	public void setValue(int value)
 	{
-		this.val = value;
+		this.value = value;
 	}
 	
 	public List<Integer> getPossibilities(){
 		return this.possibilities;
 	}
 	
-	public void setPossibilities(List<Integer> list)
+	public void setPossibilities(List<Integer> possibilities)
 	{
-		this.possibilities = list;
+		this.possibilities = possibilities;
 	}
 	
 	public String toJSON() {
