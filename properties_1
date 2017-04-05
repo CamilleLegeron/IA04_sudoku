@@ -1,0 +1,6 @@
+main = false
+gui=false
+container-name = tdtp
+host = 172.22.2.10
+local-port = 2001
+port = 2000
