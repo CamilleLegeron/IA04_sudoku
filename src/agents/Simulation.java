@@ -6,6 +6,7 @@ import java.util.List;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -15,10 +16,11 @@ public class Simulation extends Agent{
 	List<AID> listAnalyseur = new LinkedList<AID>();
 	protected void setup(){
 		addBehaviour(new IsReadyBehaviour());
+		addBehaviour(new IsDoneBehaviour());
 	}
 	
-	//Ce behaviour reçoit les souscriptions des 27 analyseurs
-	//Une fois tous reçut, il crée le behaviour MyTickerBehaviour
+	//Ce behaviour reï¿½oit les souscriptions des 27 analyseurs
+	//Une fois tous reï¿½ut, il crï¿½e le behaviour MyTickerBehaviour
 	//Et se termine
 	public class IsReadyBehaviour extends Behaviour{
 		boolean IsDone = false;
@@ -31,7 +33,7 @@ public class Simulation extends Agent{
 				listAnalyseur.add(message.getSender());
 				if(listAnalyseur.size() == count){
 					IsDone = true;
-					addBehaviour(new MyTickerBehaviour(this.getAgent(),5000));
+					addBehaviour(new MyTickerBehaviour(this.getAgent(),500));
 				}
 			}
 		}
@@ -43,11 +45,27 @@ public class Simulation extends Agent{
 	
 	}
 	
-	//Ce behaviour envoie tous les n ms 27 messages à l'environnement 
-	//Avec les coordonnées de chaque analyseur
+	public class IsDoneBehaviour extends CyclicBehaviour
+	{
+
+		@Override
+		public void action() {
+			// TODO Auto-generated method stub
+			ACLMessage message = receive(MessageTemplate.MatchPerformative(ACLMessage.CANCEL));
+			if(message!=null)
+			{
+				System.out.println("Le Sudoku est rÃ©solu");
+		        this.getAgent().doSuspend();
+			}
+			
+		}
+		
+	}
+	
+	//Ce behaviour envoie tous les n ms 27 messages ï¿½ l'environnement 
+	//Avec les coordonnï¿½es de chaque analyseur
 	public class MyTickerBehaviour extends TickerBehaviour{
 		private static final long serialVersionUID = 1L;
-
 		public MyTickerBehaviour(Agent a, long period) {
 			super(a, period);
 		}
