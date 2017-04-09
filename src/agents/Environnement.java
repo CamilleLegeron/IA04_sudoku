@@ -77,7 +77,7 @@ public class Environnement extends Agent {
 					sudoku.replaceInSudoku(id, listCel);
 					if(id == 26)
 					{
-						System.out.println("Step number" + count++ + "\n");
+						System.out.println("Step number " + count++ + "\n");
 						sudoku.display();
 					}
 				}else{
@@ -85,29 +85,6 @@ public class Environnement extends Agent {
 				}
 			}
 		}
-		private void sendToSim() {
-			ACLMessage messageToEnv = new ACLMessage(ACLMessage.CANCEL);
-			messageToEnv.addReceiver(new AID("Simulation",AID.ISLOCALNAME));
-			messageToEnv.setContent("stop");
-			send(messageToEnv);
-		}
-		
-	}
-	
-	//Behaviour qui test toutes les x secondes si le sudoku est termine, si oui -> on envoie un cancel a  la simulation
-	public class CheckBehaviour extends TickerBehaviour{
-		private static final long serialVersionUID = 1L;
-
-		public CheckBehaviour(Agent a, int period) {
-			super(a, period);
-		}
-
-		@Override
-		protected void onTick() {
-			if(sudoku.isDone())
-				sendToSim();
-		}
-		
 		private void sendToSim() {
 			ACLMessage messageToEnv = new ACLMessage(ACLMessage.CANCEL);
 			messageToEnv.addReceiver(new AID("Simulation",AID.ISLOCALNAME));

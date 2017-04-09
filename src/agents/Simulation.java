@@ -15,14 +15,14 @@ import model.RequestStoE;
 public class Simulation extends Agent{
 	List<AID> listAnalyseur = new LinkedList<AID>();
 	protected void setup(){
-		addBehaviour(new IsReadyBehaviour());
-		addBehaviour(new IsDoneBehaviour());
+		addBehaviour(new Is_Ready_Behaviour());
+		addBehaviour(new Is_Done_Behaviour());
 	}
 	
 	//Ce behaviour recoit les souscriptions des 27 analyseurs
 	//Une fois tous recut, il cree le behaviour MyTickerBehaviour
 	//Et se termine
-	public class IsReadyBehaviour extends Behaviour{
+	public class Is_Ready_Behaviour extends Behaviour{
 		boolean IsDone = false;
 		int count = 27;
 		@Override
@@ -33,7 +33,7 @@ public class Simulation extends Agent{
 				listAnalyseur.add(message.getSender());
 				if(listAnalyseur.size() == count){
 					IsDone = true;
-					addBehaviour(new MyTickerBehaviour(this.getAgent(),500));
+					addBehaviour(new My_Ticker_Behaviour(this.getAgent(),500));
 				}
 			}
 		}
@@ -45,7 +45,7 @@ public class Simulation extends Agent{
 	
 	}
 	
-	public class IsDoneBehaviour extends CyclicBehaviour
+	public class Is_Done_Behaviour extends CyclicBehaviour
 	{
 
 		@Override
@@ -63,9 +63,9 @@ public class Simulation extends Agent{
 	
 	//Ce behaviour envoie tous les n ms 27 messages a l'environnement 
 	//Avec les coordonnées de chaque analyseur
-	public class MyTickerBehaviour extends TickerBehaviour{
+	public class My_Ticker_Behaviour extends TickerBehaviour{
 		private static final long serialVersionUID = 1L;
-		public MyTickerBehaviour(Agent a, long period) {
+		public My_Ticker_Behaviour(Agent a, long period) {
 			super(a, period);
 		}
 
