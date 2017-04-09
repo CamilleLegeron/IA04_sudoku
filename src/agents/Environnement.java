@@ -21,7 +21,7 @@ public class Environnement extends Agent {
 		addBehaviour(new Treatment_behaviour());
 	}
 	
-	//Ce behaviour initialize un sudoku � partir d'un fichier texte
+	//Ce behaviour initialize un sudoku a partir d'un fichier texte
 	public class Init_sudoku_behaviour extends OneShotBehaviour{
 
 		@Override
@@ -37,7 +37,6 @@ public class Environnement extends Agent {
 
 		@Override
 		public void action() {
-			// TODO Auto-generated method stub
 			ACLMessage message = receive(MessageTemplate.MatchPerformative(ACLMessage.INFORM));
 			if (message != null) {
 				ACLMessage messageToAnalyser = new ACLMessage(ACLMessage.REQUEST);
@@ -65,7 +64,6 @@ public class Environnement extends Agent {
 		boolean isDone = false;
 		@Override
 		public void action() {
-			// TODO Auto-generated method stub
 			ACLMessage message = receive(MessageTemplate.MatchPerformative(ACLMessage.CONFIRM));
 			if (message != null) {
 				int id = Integer.parseInt(message.getConversationId());
@@ -77,9 +75,6 @@ public class Environnement extends Agent {
 				if(!isDone){
 					Cellule[] listCel = ListCellule.read(message.getContent()).getList();				
 					sudoku.replaceInSudoku(id, listCel);
-					//TEST
-					
-					//
 					if(id == 26)
 					{
 						System.out.println("Step number" + count++ + "\n");
@@ -88,12 +83,6 @@ public class Environnement extends Agent {
 				}else{
 					sendToSim();
 				}
-				
-				//if(!ticker_initiated)
-				//{
-				//	addBehaviour(new CheckBehaviour(this.getAgent(),500));
-				//	ticker_initiated = true;
-				//}
 			}
 		}
 		private void sendToSim() {

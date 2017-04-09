@@ -50,7 +50,7 @@ public class Analyseur extends Agent{
 			for(int i = 0; i < 9; i++){
 				if(list[i].getValue() == 0){
 					if(list[i].getPossibilities().size() == 0){
-						//si pas de valeur et pas de possibilit� d�fini, on inilialize les possibilit�s � [1,2,3,4,5,6,7,8,9]
+						//si pas de valeur et pas de possibilite defini, on inilialize les possibilites a [1,2,3,4,5,6,7,8,9]
 						LinkedList<Integer> temp = new LinkedList<Integer>();
 						for(int k = 1 ; k < 10 ; k++)
 						{
@@ -58,7 +58,7 @@ public class Analyseur extends Agent{
 						}
 						list[i].setPossibilities(temp);
 					}else if(list[i].getPossibilities().size() == 1){
-						//si il y a une seule possibilit�s, la valeur de la cellule prend pour valeur cette unique possibilit�
+						//si il y a une seule possibilites, la valeur de la cellule prend pour valeur cette unique possibilite
 						list[i].setValue(list[i].getPossibilities().get(0));
 						list[i].setPossibilities(new LinkedList<Integer>());
 					}
@@ -69,13 +69,13 @@ public class Analyseur extends Agent{
 		//Deuxi�me traitement de la liste
 		private void SecondFilter(Cellule[] list){
 			List<Integer> listValue = new LinkedList<Integer>();
-			//on met dans la variable listValue la liste des valeurs d�j� d�finies
+			//on met dans la variable listValue la liste des valeurs deja definies
 			for(int count = 0; count < 9; count++){
 				if(list[count].getValue() != 0)
 					listValue.add(list[count].getValue());
 			}
 			//Pour chaque cellules de la liste, n'ayant pas de valuer,
-			//on supprime les possibilit�s qui sont d�j� pr�sente dans cette liste 
+			//on supprime les possibilites qui sont deja presente dans cette liste 
 			for(int i = 0; i < 9; i++){
 				if(list[i].getValue() == 0 && list[i].getPossibilities().size() != 0)
 				{
@@ -97,7 +97,7 @@ public class Analyseur extends Agent{
 			//on parcours les cellules
 			for(int i = 0; i < 9; i++)
 			{
-				// on parcours les possibilités
+				// on parcours les possibilites
 				for(int j = 0; j< list[i].getPossibilities().size(); j++)
 				{
 					int value = list[i].getPossibilities().get(j);
@@ -110,7 +110,7 @@ public class Analyseur extends Agent{
 						}
 					}
 					if(isAlone){
-						//si la possibilité est unique, la valeur de la cellule prend pour valeur cette unique possibilit�
+						//si la possibilite est unique, la valeur de la cellule prend pour valeur cette unique possibilite
 						list[i].setValue(value);
 						// On vide la liste de cette cellule
 						list[i].setPossibilities(new LinkedList<Integer>());
@@ -120,7 +120,7 @@ public class Analyseur extends Agent{
 				
 			}
 		}
-		//Cherche les listes de possibilités identiques
+		//Cherche les listes de possibilites identiques
 		private void FourthFilter(Cellule[] list){
 			//on parcours les cellules
 			for(int i = 0; i < 9; i++)

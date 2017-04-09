@@ -19,8 +19,8 @@ public class Simulation extends Agent{
 		addBehaviour(new IsDoneBehaviour());
 	}
 	
-	//Ce behaviour reï¿½oit les souscriptions des 27 analyseurs
-	//Une fois tous reï¿½ut, il crï¿½e le behaviour MyTickerBehaviour
+	//Ce behaviour recoit les souscriptions des 27 analyseurs
+	//Une fois tous recut, il cree le behaviour MyTickerBehaviour
 	//Et se termine
 	public class IsReadyBehaviour extends Behaviour{
 		boolean IsDone = false;
@@ -50,11 +50,10 @@ public class Simulation extends Agent{
 
 		@Override
 		public void action() {
-			// TODO Auto-generated method stub
 			ACLMessage message = receive(MessageTemplate.MatchPerformative(ACLMessage.CANCEL));
 			if(message!=null)
 			{
-				System.out.println("Le Sudoku est rÃ©solu");
+				System.out.println("Le Sudoku est résolu");
 		        this.getAgent().doSuspend();
 			}
 			
@@ -62,8 +61,8 @@ public class Simulation extends Agent{
 		
 	}
 	
-	//Ce behaviour envoie tous les n ms 27 messages ï¿½ l'environnement 
-	//Avec les coordonnï¿½es de chaque analyseur
+	//Ce behaviour envoie tous les n ms 27 messages a l'environnement 
+	//Avec les coordonnées de chaque analyseur
 	public class MyTickerBehaviour extends TickerBehaviour{
 		private static final long serialVersionUID = 1L;
 		public MyTickerBehaviour(Agent a, long period) {

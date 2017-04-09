@@ -44,12 +44,10 @@ public class Sudoku {
 		    	for (int j = 0; j < 9; j++){
 		    		Cellule cel = new Cellule(i,j, Integer.valueOf(lineParsed[j].trim()));
 		    		_grid[i][j] = cel;
-//		    		System.out.println(cel.toJSON());
 		    	}
 		    }
 		    initDone = true;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -57,7 +55,7 @@ public class Sudoku {
 	}
 	
 	//Cette fonction permet d'afficher un sudoku
-	//Il affiche la valeur si elle existe, sinon il affiche la liste des possibilitï¿½s
+	//Il affiche la valeur si elle existe, sinon il affiche la liste des possibilites
 	public void display()
 	{
 		for (int i=0; i<9; i++){
@@ -79,6 +77,8 @@ public class Sudoku {
 		}		
 	}
 	
+	//Cette fonction renvoie une liste de 9 cellules 
+	//correspondant a l'id passe en parametre de la fonction
 	public Cellule[] getListCellulesById(int id) {
 		//System.out.println(id);
 		Cellule[] ListCellules = new Cellule[9];
@@ -105,6 +105,9 @@ public class Sudoku {
 		return ListCellules;
 	}
 	
+	//Cette fonction lit une liste de 9 cellules passes en parametre, correspondant à une ligne colonne ou carre.
+	//Elle remplace dans le sudoku la cellule seulement si celle proposee est meilleure 
+	// (valeur determinee, ou moins de possibilité)
 	public void replaceInSudoku(int id, Cellule[] ListCellules) {
 		if (id>=0 && id < 9) {
 			//ids correspondant aux lignes
@@ -135,7 +138,7 @@ public class Sudoku {
 				}
 			}
 		} else if (id < 27){
-			//ids correspondant aux carrï¿½s
+			//ids correspondant aux carres
 			int k = 0;
 			for (int i=0; i<3; i++){
 				for( int j=0; j<3; j++) {
@@ -143,11 +146,11 @@ public class Sudoku {
 					int colonne = 3*((id/3)-6)+j;
 					if (_grid[ligne][colonne].getValue() == 0){
 						if (ListCellules[k].getValue() != 0 ){
-							// si la valeur a ï¿½tï¿½ trouvï¿½e on la met dans le soduko
+							// si la valeur a ete trouvee on la met dans le soduko
 							_grid[ligne][colonne].setValue(ListCellules[k].getValue());			
 						} else if (_grid[ligne][colonne].getPossibilities().size() == 0 || 
 								_grid[ligne][colonne].getPossibilities().size() > ListCellules[k].getPossibilities().size()){
-							// si la liste des possibles est plus courte que prï¿½cï¿½demment on l'a remplace
+							// si la liste des possibles est plus courte que precedemment on l'a remplace
 							_grid[ligne][colonne].setPossibilities(ListCellules[k].getPossibilities());
 						}
 					}
