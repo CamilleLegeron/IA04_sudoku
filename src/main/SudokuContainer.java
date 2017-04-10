@@ -10,7 +10,6 @@ public class SudokuContainer {
 	public static String SECONDARY_PROPERTIES = "properties_1";
 	public static ContainerController cc = null;
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		Runtime rt = Runtime.instance();
 		Profile p = null;
 		try{

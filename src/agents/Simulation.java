@@ -6,6 +6,7 @@ import java.util.List;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -14,13 +15,14 @@ import model.RequestStoE;
 public class Simulation extends Agent{
 	List<AID> listAnalyseur = new LinkedList<AID>();
 	protected void setup(){
-		addBehaviour(new IsReadyBehaviour());
+		addBehaviour(new Is_Ready_Behaviour());
+		addBehaviour(new Is_Done_Behaviour());
 	}
 	
-	//Ce behaviour reçoit les souscriptions des 27 analyseurs
-	//Une fois tous reçut, il crée le behaviour MyTickerBehaviour
+	//Ce behaviour recoit les souscriptions des 27 analyseurs
+	//Une fois tous recut, il cree le behaviour MyTickerBehaviour
 	//Et se termine
-	public class IsReadyBehaviour extends Behaviour{
+	public class Is_Ready_Behaviour extends Behaviour{
 		boolean IsDone = false;
 		int count = 27;
 		@Override
@@ -31,7 +33,7 @@ public class Simulation extends Agent{
 				listAnalyseur.add(message.getSender());
 				if(listAnalyseur.size() == count){
 					IsDone = true;
-					addBehaviour(new MyTickerBehaviour(this.getAgent(),5000));
+					addBehaviour(new My_Ticker_Behaviour(this.getAgent(),500));
 				}
 			}
 		}
@@ -43,12 +45,27 @@ public class Simulation extends Agent{
 	
 	}
 	
-	//Ce behaviour envoie tous les n ms 27 messages à l'environnement 
-	//Avec les coordonnées de chaque analyseur
-	public class MyTickerBehaviour extends TickerBehaviour{
-		private static final long serialVersionUID = 1L;
+	public class Is_Done_Behaviour extends CyclicBehaviour
+	{
 
-		public MyTickerBehaviour(Agent a, long period) {
+		@Override
+		public void action() {
+			ACLMessage message = receive(MessageTemplate.MatchPerformative(ACLMessage.CANCEL));
+			if(message!=null)
+			{
+				System.out.println("Le Sudoku est résolu");
+		        this.getAgent().doSuspend();
+			}
+			
+		}
+		
+	}
+	
+	//Ce behaviour envoie tous les n ms 27 messages a l'environnement 
+	//Avec les coordonnées de chaque analyseur
+	public class My_Ticker_Behaviour extends TickerBehaviour{
+		private static final long serialVersionUID = 1L;
+		public My_Ticker_Behaviour(Agent a, long period) {
 			super(a, period);
 		}
 

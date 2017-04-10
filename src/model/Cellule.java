@@ -50,6 +50,22 @@ public class Cellule {
 		this.possibilities = possibilities;
 	}
 	
+	public boolean containsPossibility(int value){
+		if(this.possibilities.contains(value))
+			return true;
+		return false;
+	}
+	
+	public boolean containsSamePossibilities(List<Integer> poss){
+		if(this.possibilities.size() != poss.size())
+			return false;
+		for(int i = 0; i<this.possibilities.size(); i++){
+			if(!poss.contains(possibilities.get(i)))
+				return false;
+		}
+		return true;
+	}
+	
 	public String toJSON() {
 		ObjectMapper mapper = new ObjectMapper();
 		String s = "";

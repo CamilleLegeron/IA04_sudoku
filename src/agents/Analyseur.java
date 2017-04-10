@@ -26,24 +26,19 @@ public class Analyseur extends Agent{
 		@Override
 		public void action() {
 			ACLMessage message = receive(MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
-			if (message != null) {
-//				int id = Integer.parseInt(message.getConversationId());
-//				System.out.println("Je suis l'analyseur :" + getLocalName());
-//				System.out.println("MESSAGE : " + message.getContent());
-				
+			if (message != null) {		
 				ACLMessage reply = message.createReply();
 				reply.setPerformative(ACLMessage.CONFIRM);
 				
 				Cellule[] listCel = ListCellule.read(message.getContent()).getList();
 				ListCellule tmp = new ListCellule(listCel);
-				FirstFilter(listCel);
-				tmp.setList(listCel);
-//				System.out.println("TEST 1 : " + tmp.toJSON());
-				SecondFilter(listCel);
-				tmp.setList(listCel);
-//				System.out.printf(" List annalysé " + id + "  : ");
-//				System.out.println(tmp.toJSON());
 				
+				FirstFilter(listCel);
+				SecondFilter(listCel);
+				ThirdFilter(listCel);			
+				FourthFilter(listCel);
+				
+				tmp.setList(listCel);
 				reply.setContent(tmp.toJSON());
 				send(reply);
 				
@@ -55,7 +50,7 @@ public class Analyseur extends Agent{
 			for(int i = 0; i < 9; i++){
 				if(list[i].getValue() == 0){
 					if(list[i].getPossibilities().size() == 0){
-						//si pas de valeur et pas de possibilité défini, on inilialize les possibilités à [1,2,3,4,5,6,7,8,9]
+						//si pas de valeur et pas de possibilite defini, on inilialize les possibilites a [1,2,3,4,5,6,7,8,9]
 						LinkedList<Integer> temp = new LinkedList<Integer>();
 						for(int k = 1 ; k < 10 ; k++)
 						{
@@ -63,23 +58,24 @@ public class Analyseur extends Agent{
 						}
 						list[i].setPossibilities(temp);
 					}else if(list[i].getPossibilities().size() == 1){
-						//si il y a une seule possibilités, la valeur de la cellule prend pour valeur cette unique possibilité
+						//si il y a une seule possibilites, la valeur de la cellule prend pour valeur cette unique possibilite
 						list[i].setValue(list[i].getPossibilities().get(0));
+						list[i].setPossibilities(new LinkedList<Integer>());
 					}
 				}
 			}
 		}
 		
-		//Deuxième traitement de la liste
+		//Deuxiï¿½me traitement de la liste
 		private void SecondFilter(Cellule[] list){
 			List<Integer> listValue = new LinkedList<Integer>();
-			//on met dans la variable listValue la liste des valeurs déjà définies
+			//on met dans la variable listValue la liste des valeurs deja definies
 			for(int count = 0; count < 9; count++){
 				if(list[count].getValue() != 0)
 					listValue.add(list[count].getValue());
 			}
 			//Pour chaque cellules de la liste, n'ayant pas de valuer,
-			//on supprime les possibilités qui sont déjà présente dans cette liste 
+			//on supprime les possibilites qui sont deja presente dans cette liste 
 			for(int i = 0; i < 9; i++){
 				if(list[i].getValue() == 0 && list[i].getPossibilities().size() != 0)
 				{
@@ -92,6 +88,56 @@ public class Analyseur extends Agent{
 					});
 					list[i].getPossibilities().removeAll(deletedPoss);
 				}
+			}
+		}
+		
+		//Cherche les valeurs des possibles uniques
+		private void ThirdFilter(Cellule[] list){
+			
+			//on parcours les cellules
+			for(int i = 0; i < 9; i++)
+			{
+				// on parcours les possibilites
+				for(int j = 0; j< list[i].getPossibilities().size(); j++)
+				{
+					int value = list[i].getPossibilities().get(j);
+					boolean isAlone = true;
+					
+					for(int k = 0; k < 9; k++){
+						if(k!=i && list[k].containsPossibility(value)){
+							isAlone = false;
+							break;
+						}
+					}
+					if(isAlone){
+						//si la possibilite est unique, la valeur de la cellule prend pour valeur cette unique possibilite
+						list[i].setValue(value);
+						// On vide la liste de cette cellule
+						list[i].setPossibilities(new LinkedList<Integer>());
+						break;
+					}
+				}
+				
+			}
+		}
+		//Cherche les listes de possibilites identiques
+		private void FourthFilter(Cellule[] list){
+			//on parcours les cellules
+			for(int i = 0; i < 9; i++)
+			{
+				if(list[i].getPossibilities().size() == 2)
+				{
+					for(int j = 0; j<9; j++)
+					{
+						if(j!=i && list[i].containsSamePossibilities(list[j].getPossibilities()))
+						{
+							for(int delIndex = 0; delIndex < 9; delIndex++)
+								if(delIndex != j && delIndex!=i)
+									list[delIndex].getPossibilities().removeAll(list[i].getPossibilities());
+						}					
+					}
+				}
+
 			}
 		}
 	}
